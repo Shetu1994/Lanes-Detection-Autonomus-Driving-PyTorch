@@ -1,0 +1,357 @@
+{
+  "global": {
+    "Traing_Dataset_1": {
+      "path": "./data/input_data/TrainSet1000", 
+      "seed": 1, 
+      "augmenetation_applied": [
+        "LeftRightFlip", 
+        "Rotate", 
+        "ColRec", 
+        "GaussianNoise", 
+        "ZoomIn", 
+        "Invert"
+      ], 
+      "name": "TrainSet1000", 
+      "size": 10
+    }, 
+    "Network": {
+      "total_dataset_number": 2, 
+      "optimiser_params": {
+        "lr": 0.001
+      }, 
+      "optimiser": "SGD", 
+      "lane_to_nolane_weight_ratio": 4, 
+      "seed": 1, 
+      "loss_function": "CrossEntropyLoss", 
+      "num_epochs": 20, 
+      "model_name": "UNet"
+    }, 
+    "Traing_Dataset_2": {
+      "path": "./data/input_data/True_Negative_Dataset_Train", 
+      "seed": 1, 
+      "augmenetation_applied": null, 
+      "name": "True_Negative_Dataset_Train", 
+      "size": 10
+    }, 
+    "box_size_min": 0.3, 
+    "network_save_freq": 1000, 
+    "zoomin_prob": 0.3, 
+    "x_size": 10, 
+    "img_file_suffix": ".png", 
+    "img_file_prefix": "img_", 
+    "y_size": 10, 
+    "box_size_max": 0.8, 
+    "left_right_flip_prob": 0.5, 
+    "display_stats_freq": 100, 
+    "input_data_path": "./data/input_data/", 
+    "cfg_path": "./data/network_data/UNet_SGD/UNet_SGD_config.json", 
+    "trained_model_name": "trained_model.pth", 
+    "zoomout_prob": 0.5, 
+    "gaussian_prob": 0.5, 
+    "max_rot": 80, 
+    "output_data_path": "./data/output_data/UNet_SGD", 
+    "network_output_path": "./data/network_data/UNet_SGD", 
+    "std": 50, 
+    "rotate_prob": 0.5, 
+    "zoomfac_min": 1.3, 
+    "colrec_prob": 1, 
+    "num_rec": 10, 
+    "zoomfac_max": 1.5, 
+    "detections_file_name": "detections.h5", 
+    "experiment_name": "UNet_SGD", 
+    "tf_logs_path": "./data/tensor_board_logs/UNet_SGD", 
+    "invert_prob": 0.5, 
+    "mean": 0
+  }, 
+  "others": {
+    "seed": 234
+  }, 
+  "simulator": {
+    "simulator": {
+      "layers": [
+        {
+          "config_id": "0", 
+          "id": "Back0", 
+          "filters": [
+            {
+              "params": {
+                "db": 100, 
+                "dg": 100, 
+                "dr": 100
+              }, 
+              "type": "RandomColorMeanFilter"
+            }
+          ]
+        }, 
+        {
+          "config_id": "1", 
+          "id": "Sky0", 
+          "filters": [
+            {
+              "params": {
+                "db": 100, 
+                "dg": 100, 
+                "dr": 100
+              }, 
+              "type": "ConstantColorFilter"
+            }
+          ], 
+          "prob": 1
+        }, 
+        {
+          "serialize": 1, 
+          "config_id": "2", 
+          "id": "Road0", 
+          "filters": [
+            {
+              "params": {
+                "lb": -0.2, 
+                "ub": 0.2
+              }, 
+              "type": "ShiftRoadFilter"
+            }, 
+            {
+              "params": {
+                "lb": -0.02, 
+                "ub": 0.02
+              }, 
+              "type": "ShiftLanesFilter"
+            }, 
+            {
+              "params": {
+                "lb": -1.5, 
+                "ub": 1.5
+              }, 
+              "type": "TiltRoadFilter"
+            }, 
+            {
+              "params": {
+                "lb": -0.01, 
+                "ub": 0.01
+              }, 
+              "type": "LaneWidthFilter"
+            }
+          ], 
+          "prob": 1
+        }
+      ], 
+      "width": 256, 
+      "layer_configs": {
+        "1": {
+          "layer_type": "SkyLayer", 
+          "layer_params": {
+            "shape": [
+              [
+                0.0, 
+                0.1
+              ], 
+              [
+                0.0, 
+                0.7
+              ], 
+              [
+                0.3, 
+                0.5
+              ], 
+              [
+                0.0, 
+                0.1
+              ]
+            ], 
+            "color_fct": {
+              "params": {
+                "color": [
+                  0, 
+                  180, 
+                  180
+                ]
+              }, 
+              "type": "constant"
+            }
+          }
+        }, 
+        "0": {
+          "layer_type": "BackgroundLayer", 
+          "layer_params": {
+            "color_fct": {
+              "params": {
+                "range": 20, 
+                "mean": [
+                  0, 
+                  120, 
+                  80
+                ]
+              }, 
+              "type": "random"
+            }
+          }
+        }, 
+        "2": {
+          "layer_type": "StraightRoadLayer", 
+          "layer_params": {
+            "lanes": [
+              [
+                [
+                  1.0, 
+                  0.3
+                ], 
+                [
+                  0.0, 
+                  0.3
+                ]
+              ], 
+              [
+                [
+                  1.0, 
+                  0.48
+                ], 
+                [
+                  0.0, 
+                  0.48
+                ]
+              ], 
+              [
+                [
+                  1.0, 
+                  0.51
+                ], 
+                [
+                  0.0, 
+                  0.51
+                ]
+              ], 
+              [
+                [
+                  1.0, 
+                  0.69
+                ], 
+                [
+                  0.0, 
+                  0.69
+                ]
+              ]
+            ], 
+            "transform_coordinates": {
+              "src": [
+                [
+                  0.0, 
+                  0.3
+                ], 
+                [
+                  0.0, 
+                  0.7
+                ], 
+                [
+                  1.0, 
+                  0.7
+                ], 
+                [
+                  1.0, 
+                  0.3
+                ]
+              ], 
+              "tgt": [
+                [
+                  0.3, 
+                  0.45
+                ], 
+                [
+                  0.3, 
+                  0.55
+                ], 
+                [
+                  1.0, 
+                  1.0
+                ], 
+                [
+                  1.0, 
+                  0.0
+                ]
+              ]
+            }, 
+            "lane_widths": [
+              0.01, 
+              0.01, 
+              0.01, 
+              0.01
+            ], 
+            "color_fcts": [
+              {
+                "params": {
+                  "range": 10, 
+                  "mean": [
+                    80, 
+                    80, 
+                    80
+                  ]
+                }, 
+                "type": "random"
+              }, 
+              {
+                "params": {
+                  "ub": 100, 
+                  "lb": -100, 
+                  "mean": [
+                    229, 
+                    226, 
+                    52
+                  ]
+                }, 
+                "type": "constant_random_mean"
+              }, 
+              {
+                "params": {
+                  "ub": 100, 
+                  "lb": -100, 
+                  "mean": [
+                    229, 
+                    226, 
+                    52
+                  ]
+                }, 
+                "type": "constant_random_mean"
+              }, 
+              {
+                "params": {
+                  "ub": 100, 
+                  "lb": -100, 
+                  "mean": [
+                    229, 
+                    226, 
+                    52
+                  ]
+                }, 
+                "type": "constant_random_mean"
+              }, 
+              {
+                "params": {
+                  "ub": 100, 
+                  "lb": -100, 
+                  "mean": [
+                    229, 
+                    226, 
+                    52
+                  ]
+                }, 
+                "type": "constant_random_mean"
+              }
+            ], 
+            "tilt": 0, 
+            "road_width": 0.4, 
+            "road": [
+              [
+                1.0, 
+                0.3
+              ], 
+              [
+                0.0, 
+                0.3
+              ]
+            ]
+          }
+        }
+      }, 
+      "height": 256
+    }
+  }
+}
